@@ -4,25 +4,23 @@ import com.pwm.dev.mapper.TestMapper;
 import com.pwm.dev.po.TestTablePo;
 import com.pwm.dev.repo.TestTableRepo;
 import com.pwm.dev.utils.GetUUID;
+import com.pwm.dev.vo.QueryByUserIdInVo;
+import com.pwm.dev.vo.QueryByUserIdOutVo;
 import com.pwm.dev.vo.QueryListInVo;
 import com.pwm.dev.vo.QueryListOutVo;
 import com.pwm.dev.vo.TestInVo;
 import com.pwm.dev.vo.TestTableVo;
-import javafx.scene.shape.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
-import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -32,20 +30,13 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
-import javax.mail.util.ByteArrayDataSource;
-import java.io.ByteArrayInputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -103,6 +94,16 @@ public class TestServiceImpl implements TestService{
 
         outVo.setList(returnList);
         log.info("queryList success!");
+        return outVo;
+    }
+
+    @Override
+    public QueryByUserIdOutVo queryByUserId(QueryByUserIdInVo inVo) {
+        QueryByUserIdOutVo outVo=new QueryByUserIdOutVo();
+        TestTablePo po=testTableRepo.queryByUserId(inVo.getUserId()).orElse(null);
+        TestTableVo vo=new TestTableVo();
+        BeanUtils.copyProperties(po,vo);
+        outVo.setVo(vo);
         return outVo;
     }
 

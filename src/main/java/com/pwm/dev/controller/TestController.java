@@ -1,13 +1,14 @@
 package com.pwm.dev.controller;
 
 import com.pwm.dev.service.TestService;
+import com.pwm.dev.vo.QueryByUserIdInVo;
+import com.pwm.dev.vo.QueryByUserIdOutVo;
 import com.pwm.dev.vo.QueryListInVo;
 import com.pwm.dev.vo.QueryListOutVo;
 import com.pwm.dev.vo.TestInVo;
 import com.pwm.dev.vo.TestTableVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,6 +55,16 @@ public class TestController {
     @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     public QueryListOutVo queryList(@RequestBody QueryListInVo inVo) {
         return testService.queryList(inVo);
+    }
+
+
+    /**
+     * 根据UserId查询
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryByUserId",method = RequestMethod.POST)
+    public QueryByUserIdOutVo queryByUserId(@RequestBody @Validated QueryByUserIdInVo inVo) {
+        return testService.queryByUserId(inVo);
     }
 
 
