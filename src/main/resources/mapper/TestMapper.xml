@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.pwm.dev.mapper.TestMapper">
+
+    <select id="queryList" parameterType="java.util.HashMap" resultType="com.pwm.dev.po.TestTablePo">
+        select
+        t.id as id,
+        t.user_id as userId,
+        t.user_name as userName,
+        t.user_age as userAge,
+        t.remark as remark
+        from test_table t
+        <where>
+            <if test="userName!=null and userName!=''">
+                t.user_name like concat('%',#{userName})
+            </if>
+        </where>
+    </select>
+
+</mapper>
