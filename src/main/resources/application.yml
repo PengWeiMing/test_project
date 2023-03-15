@@ -1,0 +1,124 @@
+# 服务端口
+server:
+  port: 8080
+
+# mybatis配置文件路径
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+
+spring:
+  # 服务名
+  application:
+    name: test_project
+  # open-in-view 微服务建议保持session关闭
+  jpa:
+    open-in-view: false
+  # Redis配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 10000ms
+    database: 0
+  # mysql数据库配置(Druid)
+  datasource:
+    #类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    #驱动
+    driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #数据库连接
+    url: jdbc:mysql://localhost:3306/dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false
+    #数据库用户名密码
+    username: root
+    password: root
+    #连接池配置
+    druid:
+      #初始化连接池大小
+      initialSize: 10
+      #最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止
+      minIdle: 1
+      #最大活跃数
+      maxActive: 50
+      #最大建立连接等待时间。如果超过此时间将接到异常。设为－1表示无限制
+      maxWait: 60000
+      #失效检查线程运行时间间隔，要小于MySQL默认
+      timeBetweenEvictionRunsMillis: 60000
+      #连接的超时时间，默认为半小时
+      minEvictableIdleTimeMillis: 300000
+      #检查连接有效性的SQL语句
+      validationQuery: SELECT 1 FROM dual
+      #检查连接是否有效
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      #开启池的prepared statement 池功能
+      poolPreparedStatements: false
+      #statement池能够同时分配的打开的statements的最大数量
+      maxOpenPreparedStatements: 50
+      #开启StatFilter
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+        #开启Slf4jFilter,使用logback时注释
+        #slf4j:
+          #enabled: true
+          #data-source-log-enabled: false
+          #connection-log-enabled: false
+          #statement-log-enabled: false
+          #result-set-log-enabled: false
+        #开启WallFilter
+        wall:
+          enabled: true
+          log-violation: true
+          throw-exception: false
+          config:
+            delete-where-none-check: true
+      #开启Web监控
+      web-stat-filter:
+        enabled: true
+        exclusions: /druid/*,*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico
+        url-pattern: /*
+      #开启监控页面
+      stat-view-servlet:
+        enabled: true
+        login-username: druid
+        login-password: druid
+  # kafka
+  kafka:
+    bootstrap-servers: 127.0.0.1:9090,127.0.0.1:9091
+    producer: # producer 生产者
+      retries: 3 # 重试次数
+      acks: 1 # 应答级别:多少个分区副本备份完成时向生产者发送ack确认(可选0、1、all/-1)
+      batch-size: 16384 # 批量大小
+      buffer-memory: 33554432 # 生产端缓冲区大小
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # value-serializer: com.itheima.demo.config.MySerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer: # consumer消费者
+      group-id: javagroup # 默认的消费组ID
+      enable-auto-commit: true # 是否自动提交offset
+      auto-commit-interval: 100ms  # 提交offset延时(接收到消息后多久提交offset)
+      # earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+      # latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+      # none:topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # value-deserializer: com.itheima.demo.config.MyDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  # rabbitmq
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: root
+    password: root
+    #虚拟host 可以不设置,使用server默认host
+    virtual-host: JCcccHost
+
+
+
+
+

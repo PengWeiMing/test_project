@@ -229,4 +229,26 @@ public class TestServiceImpl implements TestService{
     }
 
 
+    public static void main(String[] args) throws Exception {
+        //查看堆内存的反应和内存回收情况
+        System.out.println("开始");
+
+        Thread.sleep(20000);//20秒
+
+        System.out.println("准备创建对象");
+        byte[] array=new byte[1024*1024*10];//10M的对象
+        System.out.println("创建10M的对象完毕");
+
+        Thread.sleep(20000);
+
+        System.out.println("开始回收内存");
+        array=null;
+        System.gc();
+        System.out.println("回收内存结束");
+
+        Thread.sleep(20000);
+        System.out.println("结束");
+
+    }
+
 }
