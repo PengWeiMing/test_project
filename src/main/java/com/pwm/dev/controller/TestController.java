@@ -3,6 +3,8 @@ package com.pwm.dev.controller;
 import com.pwm.dev.service.TestService;
 import com.pwm.dev.vo.QueryByUserIdInVo;
 import com.pwm.dev.vo.QueryByUserIdOutVo;
+import com.pwm.dev.vo.QueryListByPageInVo;
+import com.pwm.dev.vo.QueryListByPageOutVo;
 import com.pwm.dev.vo.QueryListInVo;
 import com.pwm.dev.vo.QueryListOutVo;
 import com.pwm.dev.vo.TestInVo;
@@ -55,6 +57,16 @@ public class TestController {
     @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     public QueryListOutVo queryList(@RequestBody QueryListInVo inVo) {
         return testService.queryList(inVo);
+    }
+
+    /**
+     * 查询（分页）
+     * 注意：Spring data jpa 默认 currentPage从0开始
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryListByPage",method = RequestMethod.POST)
+    public QueryListByPageOutVo queryListByPage(@RequestBody QueryListByPageInVo inVo) {
+        return testService.queryListByPage(inVo);
     }
 
 

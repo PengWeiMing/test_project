@@ -4,8 +4,11 @@ import com.pwm.dev.mapper.TestMapper;
 import com.pwm.dev.po.TestTablePo;
 import com.pwm.dev.repo.TestTableRepo;
 import com.pwm.dev.utils.GetUUID;
+import com.pwm.dev.utils.PageResponse;
 import com.pwm.dev.vo.QueryByUserIdInVo;
 import com.pwm.dev.vo.QueryByUserIdOutVo;
+import com.pwm.dev.vo.QueryListByPageInVo;
+import com.pwm.dev.vo.QueryListByPageOutVo;
 import com.pwm.dev.vo.QueryListInVo;
 import com.pwm.dev.vo.QueryListOutVo;
 import com.pwm.dev.vo.TestInVo;
@@ -13,8 +16,12 @@ import com.pwm.dev.vo.TestTableVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.activation.DataHandler;
@@ -98,6 +105,26 @@ public class TestServiceImpl implements TestService{
     }
 
     @Override
+    public QueryListByPageOutVo queryListByPage(QueryListByPageInVo inVo) {
+        QueryListByPageOutVo outVo=new QueryListByPageOutVo();
+
+        //注意：Spring data jpa 默认 currentPage从0开始，所以需要对传入的页码参数-1
+        Pageable pageable=PageRequest.of(inVo.getCurrentPage()-1,inVo.getPageSize());
+        Page<TestTablePo> pageList=testTableRepo.findAll(pageable);
+
+        PageResponse pageResponse=new PageResponse();
+        pageResponse.setPageSize(pageList.getPageable().getPageSize());
+
+        //注意：Spring data jpa 默认 currentPage从0开始，所以需要对返回的页码参数+1
+        pageResponse.setCurrentPage(pageList.getPageable().getPageNumber()+1);
+        pageResponse.setTotalPages(pageList.getTotalPages());
+        pageResponse.setTotalRecords((int)pageList.getTotalElements());
+        pageResponse.setData(pageList.getContent());
+        outVo.setPageResponse(pageResponse);
+        return outVo;
+    }
+
+    @Override
     public QueryByUserIdOutVo queryByUserId(QueryByUserIdInVo inVo) {
         QueryByUserIdOutVo outVo=new QueryByUserIdOutVo();
         TestTablePo po=testTableRepo.queryByUserId(inVo.getUserId()).orElse(null);
@@ -108,6 +135,7 @@ public class TestServiceImpl implements TestService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save(TestTableVo inVo) {
         TestTablePo po=new TestTablePo();
         BeanUtils.copyProperties(inVo,po);

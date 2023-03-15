@@ -2,6 +2,8 @@ package com.pwm.dev.service;
 
 import com.pwm.dev.vo.QueryByUserIdInVo;
 import com.pwm.dev.vo.QueryByUserIdOutVo;
+import com.pwm.dev.vo.QueryListByPageInVo;
+import com.pwm.dev.vo.QueryListByPageOutVo;
 import com.pwm.dev.vo.QueryListInVo;
 import com.pwm.dev.vo.QueryListOutVo;
 import com.pwm.dev.vo.TestInVo;
@@ -13,6 +15,8 @@ public interface TestService {
     void setRedisKey(TestInVo inVo);
 
     QueryListOutVo queryList(QueryListInVo inVo);
+
+    QueryListByPageOutVo queryListByPage(QueryListByPageInVo inVo);
 
     QueryByUserIdOutVo queryByUserId(QueryByUserIdInVo inVo);
 
