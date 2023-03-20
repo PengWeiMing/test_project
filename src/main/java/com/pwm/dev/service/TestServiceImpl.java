@@ -3,7 +3,7 @@ package com.pwm.dev.service;
 import com.pwm.dev.mapper.TestMapper;
 import com.pwm.dev.po.TestTablePo;
 import com.pwm.dev.repo.TestTableRepo;
-import com.pwm.dev.utils.GetUUID;
+import com.pwm.dev.utils.GUID;
 import com.pwm.dev.utils.PageResponse;
 import com.pwm.dev.vo.QueryByUserIdInVo;
 import com.pwm.dev.vo.QueryByUserIdOutVo;
@@ -139,7 +139,7 @@ public class TestServiceImpl implements TestService{
     public void save(TestTableVo inVo) {
         TestTablePo po=new TestTablePo();
         BeanUtils.copyProperties(inVo,po);
-        po.setId(GetUUID.getUUID());
+        po.setId(GUID.getGUID());
         testTableRepo.save(po);
         log.info("save success!");
     }

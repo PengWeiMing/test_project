@@ -2,9 +2,9 @@ package com.pwm.dev.utils;
 
 import java.util.UUID;
 
-public class GetUUID {
+public class GUID {
 
-    public static String getUUID(){
+    public static String getGUID(){
         return UUID.randomUUID().toString().replace("-","");
     }
 }
