@@ -170,6 +170,31 @@ public class LeetCodeDemo {
         return Arrays.stream(nums).filter(num->num!=99999).toArray().length;
     }
 
+
+    /**
+     * 8.实现二分查找法
+     * 二分查找法的时间复杂度为O(log n)，其中n为数组的长度
+     **/
+
+    public static int binarySearch(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return -1; // 如果查找不到目标值，返回-1
+    }
+
     public static void main(String[] args) {
         //1.求数组的动态和
        /* int[] nums={1,2,3,4};
@@ -215,5 +240,16 @@ public class LeetCodeDemo {
         //7.删除有序数组中的重复项
         /*int[] nums={0,0,1,1,1,2,2,3,3,4};
         System.out.println(removeDuplicates(nums));*/
+
+        //8.二分查找法
+        /*int[] arr = {1, 3, 5, 7, 9};
+        int target = 7;
+
+        int index = binarySearch(arr, target);
+        if (index != -1) {
+            System.out.println("目标值在数组中的下标为：" + index);
+        } else {
+            System.out.println("目标值不在数组中");
+        }*/
     }
 }
